@@ -7,13 +7,22 @@ mongoose.connect(DB_URL).then((res) => {
     console.log("Connection to mongoose is failed !");
 })
 
+const requestSchema = new mongoose.Schema({
+    sender: { type: mongoose.Types.ObjectId, ref: "User" },
+    reciever: { type: mongoose.Types.ObjectId, ref: "User" },
+    isAccepted: { type: String, enum: ["pending", "accepted", "declined"] },
+    date: Date
+})
+
 const userSchema = new mongoose.Schema({
     fname: String,
     lname: String,
     email: String,
     // phone: { type: String, default: null },// not known till 
     password: String,
-    joinedClubs: [{ type: mongoose.Types.ObjectId, ref: "Club" }]
+    joinedClubs: [{ type: mongoose.Types.ObjectId, ref: "Club" }],
+    freinds: [{ type: mongoose.Types.ObjectId, ref: "User" }],
+    requsest: [{ type: mongoose.Types.ObjectId, ref: "Request" }],
 })
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next(); // Skip if not modified

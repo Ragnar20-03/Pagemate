@@ -12,5 +12,5 @@ exports.JWT_SECRETE = process.env.JWT_SECRETE || "roshan";
 exports.CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME;
 exports.CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
 exports.CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;
-exports.USER_EMAIL = process.env.USER_EMAIL; // Your email address from .env
-exports.USER_PASS = process.env.USER_PASS; // Your email password or app password from .env
+exports.USER_EMAIL = process.env.USER_EMAIL;
+exports.USER_PASS = process.env.USER_PASS;

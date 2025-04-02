@@ -21,13 +21,21 @@ mongoose_1.default.connect(dotenv_1.DB_URL).then((res) => {
 }).catch((err) => {
     console.log("Connection to mongoose is failed !");
 });
+const requestSchema = new mongoose_1.default.Schema({
+    sender: { type: mongoose_1.default.Types.ObjectId, ref: "User" },
+    reciever: { type: mongoose_1.default.Types.ObjectId, ref: "User" },
+    isAccepted: { type: String, enum: ["pending", "accepted", "declined"] },
+    date: Date
+});
 const userSchema = new mongoose_1.default.Schema({
     fname: String,
     lname: String,
     email: String,
     // phone: { type: String, default: null },// not known till 
     password: String,
-    joinedClubs: [{ type: mongoose_1.default.Types.ObjectId, ref: "Club" }]
+    joinedClubs: [{ type: mongoose_1.default.Types.ObjectId, ref: "Club" }],
+    freinds: [{ type: mongoose_1.default.Types.ObjectId, ref: "User" }],
+    requsest: [{ type: mongoose_1.default.Types.ObjectId, ref: "Request" }],
 });
 userSchema.pre("save", function (next) {
     return __awaiter(this, void 0, void 0, function* () {

@@ -40,6 +40,12 @@ const clubSchema = new mongoose.Schema({
     book: { type: mongoose.Types.ObjectId, ref: "Book" },
     members: [{ type: mongoose.Types.ObjectId, ref: "User" },]
 })
+clubSchema.pre("save", function (next) {
+    if (this.validTill && new Date() > this.validTill) {
+        this.isOpen = false;
+    }
+    next();
+});
 export const User = mongoose.model("User", userSchema)
 export const Book = mongoose.model("Book", bookSchema)
 export const Club = mongoose.model("Club", clubSchema)

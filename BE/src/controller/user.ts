@@ -1,6 +1,8 @@
 import { Request, RequestHandler, Response } from "express";
 import bcrypt from "bcrypt"
-import { User } from "../db/user";
+import jwt from "jsonwebtoken"
+import { User } from "../db/schema";
+import { JWT_SECRETE } from "../config/dotenv";
 export const registerController: RequestHandler | any = async (req: Request, res: Response) => {
     try {
         const { fname, lname, email, password } = req.body
@@ -46,11 +48,15 @@ export const loginController: RequestHandler | any = async (req: Request, res: R
         }
         let user = await User.findOne({ email })
         if (user) {
-            if (user.password == password) {
+            //@ts-ignore
+            if (await bcrypt.compare(password, user.password)) {
                 // JSOn Web Token Generation
+                let token = jwt.sign({ uid: user._id }, JWT_SECRETE)
+                // res.cookie('token', token)
                 return res.status(200).json({
                     status: "success",
-                    msg: "Login Succesfull !"
+                    msg: "Login Succesfull !",
+                    token
                 })
             }
             else {

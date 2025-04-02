@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.joinClubController = exports.createClubController = void 0;
+exports.getAllClubsController = exports.joinClubController = exports.createClubController = void 0;
 const schema_1 = require("../db/schema");
 const generateUniqueRoomCode = () => __awaiter(void 0, void 0, void 0, function* () {
     const characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -33,7 +33,7 @@ const createClubController = (req, res) => __awaiter(void 0, void 0, void 0, fun
             });
         }
         let roomCode = yield generateUniqueRoomCode();
-        let newClub = yield schema_1.Club.create({ members: [], clubName, clubCode: roomCode, roomCode, validTill, isOpen: true, admin: uid });
+        let newClub = yield schema_1.Club.create({ members: [], clubName, clubCode: roomCode, roomCode, validTill, isOpen: true, admin: uid, book: null });
         if (newClub) {
             return res.status(200).json({
                 status: "success",
@@ -78,3 +78,12 @@ const joinClubController = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.joinClubController = joinClubController;
+const getAllClubsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let uid = req.uid;
+    let clubs = yield schema_1.User.find({ _id: uid }).populate('joinedClubs');
+    return res.status(200).json({
+        status: "success",
+        clubs
+    });
+});
+exports.getAllClubsController = getAllClubsController;

@@ -12,21 +12,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const dotenv_1 = require("./config/dotenv");
-const user_1 = require("./routes/user");
-const cloudinary_1 = require("./config/cloudinary");
-const app = (0, express_1.default)();
-app.use(express_1.default.json());
-app.use("/api/v1/user", user_1.router);
-//@ts-ignore
-app.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    return res.status(200).json({
-        msg: "Jay Ganesh ! from PageMate"
-    });
-}));
-app.listen(dotenv_1.PORT, () => {
-    console.log("Server started on port number : ", dotenv_1.PORT);
-    console.log("api key is : ", dotenv_1.CLOUDINARY_API_SECRET);
-    (0, cloudinary_1.cloudinary_start)();
+const multer_1 = __importDefault(require("multer"));
+const cloudinary_1 = require("cloudinary");
+const multer_storage_cloudinary_1 = require("multer-storage-cloudinary");
+// Configure storage to upload PDFs to Cloudinary
+const storage = new multer_storage_cloudinary_1.CloudinaryStorage({
+    cloudinary: cloudinary_1.v2,
+    params: {
+        //@ts-ignore
+        folder: "books", // Cloudinary folder name
+        resource_type: "raw", // For PDFs, use "raw" instead of "image"
+        //@ts-ignore
+        format: (req, file) => __awaiter(void 0, void 0, void 0, function* () { return "pdf"; }), // Force PDF format
+    },
 });
+// Initialize Multer with Cloudinary storage
+const upload = (0, multer_1.default)({
+    storage,
+    limits: { fileSize: 20 * 1024 * 1024 }, // 20MB limit
+});
+exports.default = upload;

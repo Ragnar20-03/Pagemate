@@ -8,13 +8,16 @@ const express_1 = __importDefault(require("express"));
 const user_1 = require("../controller/user");
 const userMiddleware_1 = require("../middleware/userMiddleware");
 const club_1 = require("../controller/club");
+const multer_1 = __importDefault(require("../config/multer"));
+const book_1 = require("../controller/book");
 exports.router = express_1.default.Router();
 exports.router.post('/register', user_1.registerController);
 exports.router.post('/login', user_1.loginController);
 // router.post('/forgotPassword') // will be last
 exports.router.post('/createClub', userMiddleware_1.userMiddleware, club_1.createClubController);
 exports.router.post('/joinClub', userMiddleware_1.userMiddleware, club_1.joinClubController);
-// router.post('/addBook',userMiddleware,)
+exports.router.post('/getAllClubs', userMiddleware_1.userMiddleware, club_1.getAllClubsController);
+exports.router.post('/addBook/:clubId', userMiddleware_1.userMiddleware, multer_1.default.single('book'), book_1.addBookController);
 exports.router.get('/getAllUsers', userMiddleware_1.userMiddleware, user_1.getAllUsers);
 // router.post('/addFreind',userMiddleware,)
 // router.post('/message',userMiddleware,) // will be also last

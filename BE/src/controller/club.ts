@@ -26,7 +26,7 @@ export const createClubController: RequestHandler | any = async (req: Request, r
             })
         }
         let roomCode = await generateUniqueRoomCode()
-        let newClub = await Club.create({ members: [], clubName, clubCode: roomCode, roomCode, validTill, isOpen: true, admin: uid })
+        let newClub = await Club.create({ members: [], clubName, clubCode: roomCode, roomCode, validTill, isOpen: true, admin: uid, book: null })
         if (newClub) {
             return res.status(200).json({
                 status: "success",
@@ -72,3 +72,15 @@ export const joinClubController: RequestHandler | any = async (req: Request, res
         })
     }
 }
+
+
+export const getAllClubsController: RequestHandler | any = async (req: Request, res: Response) => {
+    let uid = req.uid
+    let clubs = await User.find({ _id: uid }).populate('joinedClubs')
+    return res.status(200).json({
+        status: "success",
+        clubs
+    })
+}
+
+

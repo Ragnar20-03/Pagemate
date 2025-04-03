@@ -9,7 +9,7 @@ mongoose.connect(DB_URL).then((res) => {
 
 const requestSchema = new mongoose.Schema({
     sender: { type: mongoose.Types.ObjectId, ref: "User" },
-    reciever: { type: mongoose.Types.ObjectId, ref: "User" },
+    receiver: { type: mongoose.Types.ObjectId, ref: "User" },
     isAccepted: { type: String, enum: ["pending", "accepted", "declined"] },
     date: Date
 })
@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
     password: String,
     joinedClubs: [{ type: mongoose.Types.ObjectId, ref: "Club" }],
     freinds: [{ type: mongoose.Types.ObjectId, ref: "User" }],
-    requsest: [{ type: mongoose.Types.ObjectId, ref: "Request" }],
+    requests: [{ type: mongoose.Types.ObjectId, ref: "Request" }],
 })
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next(); // Skip if not modified
@@ -58,3 +58,4 @@ clubSchema.pre("save", function (next) {
 export const User = mongoose.model("User", userSchema)
 export const Book = mongoose.model("Book", bookSchema)
 export const Club = mongoose.model("Club", clubSchema)
+export const AddFreind = mongoose.model("AddFreind", requestSchema)

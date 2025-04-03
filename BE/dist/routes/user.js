@@ -19,5 +19,7 @@ exports.router.post('/joinClub', userMiddleware_1.userMiddleware, club_1.joinClu
 exports.router.post('/getAllClubs', userMiddleware_1.userMiddleware, club_1.getAllClubsController);
 exports.router.post('/addBook/:clubId', userMiddleware_1.userMiddleware, multer_1.default.single('book'), book_1.addBookController);
 exports.router.get('/getAllUsers', userMiddleware_1.userMiddleware, user_1.getAllUsers);
-// router.post('/addFreind',userMiddleware,)
+exports.router.post('/addFreind', userMiddleware_1.userMiddleware, user_1.AddFreindController);
+exports.router.post('/acceptRequest/:reqId', userMiddleware_1.userMiddleware, user_1.acceptFreindRequestController);
+// router.post('/removeFreind', userMiddleware,)
 // router.post('/message',userMiddleware,) // will be also last

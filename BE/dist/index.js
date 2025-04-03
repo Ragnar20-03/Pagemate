@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = require("./config/dotenv");
 const user_1 = require("./routes/user");
-const cloudinary_1 = require("./config/cloudinary");
+// import { cloudinary_start } from "./config/cloudinary"
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use("/api/v1/user", user_1.router);
@@ -28,5 +28,5 @@ app.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 app.listen(dotenv_1.PORT, () => {
     console.log("Server started on port number : ", dotenv_1.PORT);
     console.log("api key is : ", dotenv_1.CLOUDINARY_API_SECRET);
-    (0, cloudinary_1.cloudinary_start)();
+    // cloudinary_start()
 });

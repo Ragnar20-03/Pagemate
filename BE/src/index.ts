@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express"
 import { CLOUDINARY_API_SECRET, PORT } from "./config/dotenv"
 import { router as userRouter } from "./routes/user"
-import { cloudinary_start } from "./config/cloudinary"
+// import { cloudinary_start } from "./config/cloudinary"
 
 
 const app = express()
@@ -18,5 +18,5 @@ app.get('/', async (req: Request, res: Response) => {
 app.listen(PORT, () => {
     console.log("Server started on port number : ", PORT);
     console.log("api key is : ", CLOUDINARY_API_SECRET)
-    cloudinary_start()
+    // cloudinary_start()
 })

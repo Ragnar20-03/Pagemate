@@ -21,5 +21,5 @@ exports.router.post('/addBook/:clubId', userMiddleware_1.userMiddleware, multer_
 exports.router.get('/getAllUsers', userMiddleware_1.userMiddleware, user_1.getAllUsers);
 exports.router.post('/addFreind', userMiddleware_1.userMiddleware, user_1.AddFreindController);
 exports.router.post('/acceptRequest/:reqId', userMiddleware_1.userMiddleware, user_1.acceptFreindRequestController);
-// router.post('/removeFreind', userMiddleware,)
+exports.router.post('/removeFreind/:friendId', userMiddleware_1.userMiddleware, user_1.removeFreindController);
 // router.post('/message',userMiddleware,) // will be also last

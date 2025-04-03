@@ -190,3 +190,45 @@ export const acceptFreindRequestController: RequestHandler | any = async (req: R
         return res.status(500).json({ status: "failed", msg: "Something went wrong" });
     }
 };
+
+
+export const removeFreindController: RequestHandler | any = async (req: Request, res: Response) => {
+    try {
+        let uid = req.uid;  // Current user removing the friend
+        let friendId = req.params.friendId; // Friend's user ID
+        console.log("freind Id is ; ", friendId);
+
+        if (!mongoose.Types.ObjectId.isValid(friendId)) {
+            return res.status(400).json({ status: "failed", msg: "Invalid friend ID" });
+        }
+
+        let user = await User.findById(uid);
+        let friend = await User.findById(friendId);
+
+        if (!user || !friend) {
+            return res.status(404).json({ status: "failed", msg: "User or friend not found" });
+        }
+
+        // Ensure they are actually friends before removing
+        if (
+            !user.freinds.map(f => f.toString()).includes(friendId) ||
+            //@ts-ignore
+            !friend.freinds.map(f => f.toString()).includes(uid.toString())
+        ) {
+            return res.status(400).json({ status: "failed", msg: "Not friends" });
+        }
+
+        // Remove each other from their friends list
+        await User.findByIdAndUpdate(uid, { $pull: { freinds: friendId } });
+        await User.findByIdAndUpdate(friendId, { $pull: { freinds: uid } });
+
+        return res.status(200).json({
+            status: "success",
+            msg: "Friend removed successfully",
+        });
+
+    } catch (error) {
+        console.error("Error removing friend:", error);
+        return res.status(500).json({ status: "failed", msg: "Something went wrong" });
+    }
+};

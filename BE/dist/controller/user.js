@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.acceptFreindRequestController = exports.AddFreindController = exports.getAllUsers = exports.loginController = exports.registerController = void 0;
+exports.removeFreindController = exports.acceptFreindRequestController = exports.AddFreindController = exports.getAllUsers = exports.loginController = exports.registerController = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const schema_1 = require("../db/schema");
@@ -190,3 +190,36 @@ const acceptFreindRequestController = (req, res) => __awaiter(void 0, void 0, vo
     }
 });
 exports.acceptFreindRequestController = acceptFreindRequestController;
+const removeFreindController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        let uid = req.uid; // Current user removing the friend
+        let friendId = req.params.friendId; // Friend's user ID
+        console.log("freind Id is ; ", friendId);
+        if (!mongoose_1.default.Types.ObjectId.isValid(friendId)) {
+            return res.status(400).json({ status: "failed", msg: "Invalid friend ID" });
+        }
+        let user = yield schema_1.User.findById(uid);
+        let friend = yield schema_1.User.findById(friendId);
+        if (!user || !friend) {
+            return res.status(404).json({ status: "failed", msg: "User or friend not found" });
+        }
+        // Ensure they are actually friends before removing
+        if (!user.freinds.map(f => f.toString()).includes(friendId) ||
+            //@ts-ignore
+            !friend.freinds.map(f => f.toString()).includes(uid.toString())) {
+            return res.status(400).json({ status: "failed", msg: "Not friends" });
+        }
+        // Remove each other from their friends list
+        yield schema_1.User.findByIdAndUpdate(uid, { $pull: { freinds: friendId } });
+        yield schema_1.User.findByIdAndUpdate(friendId, { $pull: { freinds: uid } });
+        return res.status(200).json({
+            status: "success",
+            msg: "Friend removed successfully",
+        });
+    }
+    catch (error) {
+        console.error("Error removing friend:", error);
+        return res.status(500).json({ status: "failed", msg: "Something went wrong" });
+    }
+});
+exports.removeFreindController = removeFreindController;

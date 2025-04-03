@@ -1,5 +1,5 @@
 import express from "express";
-import { acceptFreindRequestController, AddFreindController, getAllUsers, loginController, registerController } from "../controller/user";
+import { acceptFreindRequestController, AddFreindController, getAllUsers, loginController, registerController, removeFreindController } from "../controller/user";
 import { userMiddleware, } from "../middleware/userMiddleware";
 import { createClubController, getAllClubsController, joinClubController } from "../controller/club";
 import upload from "../config/multer";
@@ -19,6 +19,6 @@ router.post('/addBook/:clubId', userMiddleware, upload.single('book'), addBookCo
 router.get('/getAllUsers', userMiddleware, getAllUsers)
 router.post('/addFreind', userMiddleware, AddFreindController)
 router.post('/acceptRequest/:reqId', userMiddleware, acceptFreindRequestController)
-// router.post('/removeFreind', userMiddleware,)
+router.post('/removeFreind/:friendId', userMiddleware, removeFreindController)
 
 // router.post('/message',userMiddleware,) // will be also last

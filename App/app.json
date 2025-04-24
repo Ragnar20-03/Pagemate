@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "MyPDFApp",
-    "slug": "MyPDFApp",
+    "name": "spotlight-booking",
+    "slug": "spotlight-booking",
     "version": "1.0.0",
-    "orientation": "default",
+    "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
@@ -13,7 +13,8 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.spotlight-booking"
     },
     "android": {
       "adaptiveIcon": {

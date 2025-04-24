@@ -15,6 +15,7 @@ router.post('/createClub', userMiddleware, createClubController)
 router.post('/joinClub', userMiddleware, joinClubController)
 router.post('/getAllClubs', userMiddleware, getAllClubsController)
 
+// personal reading books 
 router.post("/addBook/:clubId", userMiddleware, upload.single("book"), addBookController);
 
 router.get('/getAllUsers', userMiddleware, getAllUsers)
